@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        {% load staticfiles %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" language="JavaScript" src="{% static 'scripts/jquery-1.3.1.js' %}"></script>
+<script type="text/javascript" language="JavaScript" src="{% static 'scripts/bootstrap.min.js' %}"></script>
+<script type="text/javascript" language="JavaScript" src="{% static 'scripts/regist.js' %}"></script>
+<title>注册页面</title>
+<style type="text/css">
+#h2id{
+	font-family:"华文行楷";
+	color:#306;
+	}
+#tip1 tip2{
+	font-family:"Times New Roman", Times, serif
+	font-weight:bold;
+	}
+.pclass{
+	color:#306;
+	font-size:20px;
+	font-weight:bold;
+	font-family:"华文行楷";
+	}
+</style>
+</head>
+<style>
+{% load static %}
+body{
+    text-align:left;
+	background:url("{% static "img/1.jpg"%}") no-repeat fixed center;
+	background-size:100% 100%;
+	}
+</style>
+<br><br><br><br><br><br><br><br><br><br>
+<table width="500px" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="center" valign="bottom" style=" background-color: #dddddd"><h2 id="h2id">欢迎来到注册页面</h2></td>
+  </tr>
+</table>
+<hr align="center" width="500px" size="5" color="#41E429">
+
+<form action="/regist/" method="post" name="form1" enctype="multipart/form-data" id="form1">
+    {% csrf_token %}
+  <table width="500px" border="0" align="center" cellspacing="20"  style="background-color: #dddddd">
+    <tr>
+      <td width="170" align="left"><p class="pclass"><label for="username">请输入用户名：</label></p></td>
+      <td width="235" ><input type="text" value="张三" name="username" id="username" size="16"  maxlength="20" onfocus="javascript:if(this.value=='张三')this.value='';" onblur="javascript:if(this.value=='')this.value='张三';">
+      <div id="tip1" style="display:inline;color: red;" name="tip1">{{ tip }}</div></td>
+    </tr>
+
+    <tr>
+      <td width="150"><p class="pclass"><label for="password">请输入密码：</label></p></td>
+      <td width="235" ><input type="password" name="password" id="password" size="16"  maxlength="20" >
+      <div id="tip2" style="display:inline;color: red;" name="tip2"></div></td>
+    </tr>
+      <tr>
+      <td width="150"><p class="pclass"><label for="mail">请输入邮箱：</label></p></td>
+      <td width="235" ><input type="text" name="mail" id="mail" size="16"  maxlength="20" >
+      <div id="tip3" style="display:inline;color: red;" name="tip3"></div></td>
+    </tr>
+      <tr>
+      <td width="150"><p class="pclass"><label for="phone">请输入电话：</label></p></td>
+      <td width="235" ><input type="text" name="phone" id="phone" size="16"  maxlength="20" >
+      <div id="tip4" style="display:inline;color: red;" name="tip4"></div></td>
+    </tr>
+      <tr>
+      <td width="150"><p class="pclass"><label for="name">请输入名字：</label></p></td>
+      <td width="235" ><input type="text" name="name" id="name" size="16"  maxlength="20" >
+      <div id="tip5" style="display:inline;color: red;" name="tip5"></div></td>
+    </tr>
+      <tr>
+      <td colspan="4" align="center">
+           <button type="submit" class="btn btn-success" id="submit">提交</button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           <button type="submit" class="btn btn-success" id="return">取消</button>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>
+>

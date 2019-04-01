@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8"> 
+<title>发表回复界面</title> 
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+{% load static %}
+body{
+    text-align:left;
+	background:url('http://pic1.bbzhi.com/fengjingbizhi/xinxilanjiaowaifengjingbizhi/nature_new_zealand_landscapes_2_1920x1200_492336_10.jpg') no-repeat fixed center;
+	background-size:100% 100%;
+	}
+</style>
+
+<script>
+function myFunction()
+{
+	var con=document.getElementById("reply").value;
+	if(con=="") alert("正文不能为空！");
+	else
+    {
+        document.form.action="/reply1/";
+        document.form.method="POST";
+    }
+}
+function myFunction1()
+{
+
+        document.back.action="/hotlist/"
+        document.back.method="POST"
+
+}
+</script>
+</head>
+<body>
+<div align="center" class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<h3>
+				发表对{{ user.username }}的回复
+			</h3>
+		</div>
+		<form name="back" method="" action="">
+                {% csrf_token %}
+
+			    <button name="back"  class="btn btn-large btn-primary" type="submit" onclick="myFunction1()">返回</button>
+            </form>
+		<br>
+		<form name="form" method="" action="">
+            {% csrf_token %}
+		<div>
+               <input type="hidden" id="quename" name="user" value="{{ user}}"><br>
+               <input type="hidden" name="username" value="{{ usercur}}">
+                 <input type="hidden" id="quename" name="quename" value="{{quename}}"><br>
+                <textarea name="reply" id="reply"></textarea>
+                <script type="text/javascript">CKEDITOR.replace('reply');</script>
+		</div>
+		<div class="span12">
+			 <button class="btn btn-large btn-primary" type="submit" onclick="myFunction()">提交</button>&nbsp&nbsp&nbsp&nbsp<button class="btn btn-large btn-primary" type="submit" onclick="myFunction1()">取消</button>
+		</div>
+        </form>
+	</div>
+</div>
+</body>
+</html>

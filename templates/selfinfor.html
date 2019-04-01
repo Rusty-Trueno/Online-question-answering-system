@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>编辑个人信息</title>
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+{% load static %}
+body{
+    text-align:left;
+	background:url('http://pic1.bbzhi.com/fengjingbizhi/xinxilanjiaowaifengjingbizhi/nature_new_zealand_landscapes_2_1920x1200_492336_10.jpg') no-repeat fixed center;
+	background-size:100% 100%;
+	}
+</style>
+<script>
+function myFunction()
+{
+    var name=document.getElementById("name").value;
+	var tele=document.getElementById("tele").value;
+	if(name=="") alert("姓名不能为空！");
+	else if(tele=="") alert("电话不能为空！");
+	else if(isNaN(tele)) alert("电话应输入数字！");
+	else
+    {
+        document.form1.action="/selfinfor/";
+        document.form1.method="POST";
+    }
+}
+function myFunction2()
+{
+    document.form1.action="/list/?start=0&end=10";
+    document.form1.method="POST";
+}
+</script>
+</head>
+<body>
+<br>
+<div align="center">
+<h1>欢迎您进入编辑界面</h1>
+<form name="form1" action="" method="">
+    {% csrf_token %}
+        <label>请输入您的修改：</label>
+     <!--input type="hidden",name="mark" id="mark"><br>
+     <input type="hidden" name="user" value="{{ user}}"><br>
+     <input type="hidden" name="todoid" value="{{ todo.id }}"><br><br-->
+    <input type="hidden" name="user" value="{{ user}}"><br>
+姓名:<input id="name" type="name" name="name" value="{{ infor.name}}"><br><br>
+电话:<input id="tele" type="tel" name="tel" value="{{ infor.tel}}"><br><br>
+    <hr>
+    <button type="submit" class="btn btn-success "onclick="myFunction()">更新</button>
+    <button type="subimt"  class="btn btn-success" onclick= "myFunction2()">取消</button>
+</form>
+<p>请输入您要添加的用户信息，确认无误后点击提交按钮。</p>
+</div>
+</body>
+</html>

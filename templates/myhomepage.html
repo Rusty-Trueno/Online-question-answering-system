@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{{ user.username }}的主页</title>
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+{% load static %}
+body{
+    text-align:left;
+	background:url("{%static "img/2.jpg"%}") no-repeat fixed center;
+	background-size:100% 100%;
+	}
+</style>
+<script>
+function myFunction1()
+{
+    if(1){
+        document.back.action="/list/?start=0&end=10";
+        document.back.method="POST"
+    }
+}
+function myFunction2()
+{
+    if(1){
+        document.edit.action="/selfinfor/"
+        document.edit.method="GET"
+    }
+}
+function openShutManager(oSourceObj,oTargetObj,shutAble,oOpenTip,oShutTip){  
+var sourceObj = typeof oSourceObj == "string" ? document.getElementById(oSourceObj) : oSourceObj;  
+var targetObj = typeof oTargetObj == "string" ? document.getElementById(oTargetObj) : oTargetObj;  
+var openTip = oOpenTip || "";  
+var shutTip = oShutTip || "";  
+if(targetObj.style.display!="none"){  
+   if(shutAble) return;  
+   targetObj.style.display="none";  
+   if(openTip  &&  shutTip){  
+    sourceObj.innerHTML = shutTip;   
+   }  
+} else {  
+   targetObj.style.display="block";  
+   if(openTip  &&  shutTip){  
+    sourceObj.innerHTML = openTip;   
+   }  
+}  
+}  
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<h3>
+				{{ user.username }}的主页
+			</h3>
+            <form name="up" method="get" action="/Follow/">
+                <input type="hidden" name="user" id="user" value="{{ user}}"><br>
+			    <button type="submit" id="modal-10"  data-toggle="modal" class="btn btn-success btn-xs">刷新</button>
+            </form>
+            <button type="button" id="modal-11" href="#modal-container-11" data-toggle="modal" class="btn btn-success btn-xs">谁关注我</button>
+			<form name="back" method="" action="">
+                {% csrf_token %}
+                <input type="hidden" name="user" id="user" value="{{ user}}"><br>
+			    <button name="back"  class="btn btn-large btn-primary" type="submit" onclick="myFunction1()">返回首页</button>
+            </form>
+			<div class="modal fade" id="modal-container-11" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h4 class="modal-title" id="myModalLabel">
+								荣帅的关注者：
+							</h4>
+						</div>
+						<div class="modal-body">
+							<ul>
+                                {% csrf_token %}
+                                {% for mem in follower %}
+								<li>
+									<a align="left" href="#" class="list-group-item active">{{ mem.follower}}</a>
+								</li>
+                                {% endfor %}
+							</ul>
+						</div>
+						<div class="modal-footer">
+							 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						</div>
+					</div>
+					
+				</div>
+				
+			</div>
+            <form name="edit" method="" action="">
+                {% csrf_token %}
+                <input type="hidden" name="user" value="{{ user}}"><br>
+			    <button name="edit" type="submit" class="btn btn-default btn-block btn-link" onclick="myFunction2()">编辑个人的信息</button>
+            </form>
+			<div class="tabbable" id="tabs-859662">
+				<ul class="nav nav-tabs">
+
+					<li>
+						 <a href="#panel-594906" data-toggle="tab">我的问题</a>
+					</li>
+					<li class="active">
+						 <a href="#panel-314662" data-toggle="tab">我的回答</a>
+					</li>
+                    <li>
+						 <a href="#panel-418339" data-toggle="tab">已有人回答的问题</a>
+					</li>
+                    <li>
+						 <a href="#panel-418340" data-toggle="tab">我关注的人</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane" id="panel-594906">
+						<p>
+							<ol>
+                            {% csrf_token %}
+                            {% for que in myquestion %}
+								<li>
+									<a align="center" href="/questionlist/?questionID={{ que.quename }}&user={{ que.user.username }}">{{ que.quename }}</a>
+								</li>
+                            {% endfor %}
+							</ol>
+						</p>
+					</div>
+                    <div class="tab-pane" id="panel-418339">
+						<p>
+							<ol>
+                            {% csrf_token %}
+                            {% for nrq in needresponseque %}
+								<li>
+									<a align="center" href="/toresponse/?questionID={{ nrq.quename }}&user={{ nrq.user.username }}">{{ nrq.quename }}</a>
+								</li>
+                            {% endfor %}
+							</ol>
+						</p>
+					</div>
+                    <div class="tab-pane" id="panel-418340">
+						<p>
+							<ol>
+                            {% csrf_token %}
+                            {% for fol in myfollow %}
+								<li>
+									<a align="center" href="/homepage/?queuser={{ fol.user }}&user={{fol.follower }}">{{ fol.user }}</a>
+								</li>
+                            {% endfor %}
+							</ol>
+						</p>
+					</div>
+					<div class="tab-pane active" id="panel-314662">
+						<p>
+                            {% csrf_token %}
+                            {% for ans in myanswer %}
+							<div class="list-group">
+
+								<a align="left" href="#" class="list-group-item active">{{ user.username }}</a>
+								<div class="list-group-item">
+									<h4 class="list-group-item-heading">
+										<a align="center" href="/questionlist/?questionID={{ ans.question.quename }}&user={{ ans.question.user.username }}">{{ ans.question.quename }}</a>
+									</h4>
+								</div>
+								<div class="list-group-item">
+								<div class="panel-group" id="panel-11">
+								
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											 <a class="panel-title" data-toggle="collapse" data-parent="#panel-11" href="#panel-element-12">展开/折叠</a>
+										</div>
+										<div id="panel-element-12" class="panel-collapse collapse in">
+											<div class="panel-body">
+												{{ ans.content|safe }}
+											</div>
+										</div>
+									</div>
+								</div>
+								</div>
+								<div class="list-group-item">
+								<div class="btn-group">
+								
+									 <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 点击量</button> <button id="modal-11" href="#modal-container-12" role="button" class="btn" data-toggle="modal"><em class="glyphicon glyphicon-align-center"></em> 查看回复</button> 
+										<div class="modal fade" id="modal-container-12" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-header">
+															 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+															<h4 class="modal-title" id="myModalLabel">
+																对{{ user.username }}的评论
+															</h4>
+														</div>
+														<div class="modal-body">
+															<ul>
+																<li>
+																	<div class="col-md-12 column">
+																		<div class="panel panel-default">
+																			<div class="panel-heading">
+																				<h3 class="panel-title">
+																					<a align="left" href="#" class="list-group-item active">詹姆斯</a>
+																				</h3>
+																			</div>
+																			<div class="panel-body">
+																				扯犊子吧，我还觉得老子是历史第一呢！
+																			</div>
+																			<div class="panel-footer">
+																				<button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 赞</button><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 回复</button>
+																			</div>
+																		</div>
+																	</div>
+																</li>
+																<li>
+																	<div class="col-md-12 column">
+																		<div class="panel panel-default">
+																			<div class="panel-heading">
+																				<h3 class="panel-title">
+																					<a align="left" href="#" class="list-group-item active">杜兰特</a>
+																				</h3>
+																			</div>
+																			<div class="panel-body">
+																				我不是针对谁，我就想说在座的各位都是渣渣..
+																			</div>
+																			<div class="panel-footer">
+																				<button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 赞</button><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 回复</button>
+																			</div>
+																		</div>
+																	</div>
+																</li>
+															</ul>
+														</div>
+														<div class="modal-footer">
+															 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+														</div>
+													</div>
+													
+												</div>
+												
+										</div>
+								</div>
+								</div>
+
+							</div>
+                            {% endfor %}
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</html>

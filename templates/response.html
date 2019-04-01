@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    {% load staticfiles %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" language="JavaScript" src="{% static 'scripts/jquery-1.3.1.js' %}"></script>
+<script type="text/javascript" language="JavaScript" src="{% static 'scripts/bootstrap.min.js' %}"></script>
+<script type="text/javascript" language="JavaScript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+<meta charset="utf-8"> 
+<title>回复界面</title> 
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+{% load static %}
+body{
+    text-align:left;
+	background:url("{%static "img/4.jpg"%}") no-repeat fixed center;
+	background-size:100% 100%;
+	}
+</style>
+
+<script>
+function myFunction()
+{
+	var con=editor.getData();
+	if(con=="") alert("正文不能为空！");
+	else
+    {
+        document.form.action="/response/"
+        document.form.method="post";
+    }
+}
+function myFunction2() {
+    document.form.action = "/toresponse/";
+    document.form.method = "get";
+}
+function myFunction1()
+{
+        document.back.action="/list/?start=0&end=10";
+        document.back.method="post"
+}
+</script>
+</head>
+<body>
+<div align="center" class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<h3>
+				<a align="center" href="#">{{ quename }}</a>
+			</h3>
+		</div>
+		<form name="back" method="" action="">
+                {% csrf_token %}
+
+			    <button name="back"  class="btn btn-large btn-primary" type="submit" onclick="myFunction1()">返回主页</button>
+            </form>
+        <form name="form" method="" action="">
+            {% csrf_token %}
+		<div>
+
+               <input type="hidden" name="user" id="user" value="{{ user.username}}"><br>
+                 <input type="hidden" name="questionID" id="questionID" value="{{quename}}"><br>
+                <textarea name="response" id="response" class="" cols="40" rows="15"></textarea>
+                <script type="text/javascript">editor=CKEDITOR.replace('response');</script>
+		</div>
+		<div class="span12">
+			 <button class="btn btn-large btn-primary" type="submit" onclick="myFunction()">提交</button>&nbsp&nbsp&nbsp&nbsp<button class="btn btn-large btn-primary" type="submit" onclick="myFunction2()">返回</button>
+		</div>
+        </form>
+	</div>
+</div>
+</body>
+</html>

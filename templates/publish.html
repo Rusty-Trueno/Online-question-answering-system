@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head> 
+ {% load staticfiles %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" language="JavaScript" src="{% static 'scripts/jquery-1.3.1.js' %}"></script>
+<script type="text/javascript" language="JavaScript" src="{% static 'scripts/bootstrap.min.js' %}"></script>
+<script type="text/javascript" language="JavaScript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<meta charset="utf-8"> 
+<title>发表问题界面</title> 
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+{% load static %}
+body{
+    text-align:left;
+	background:url("{%static "img/2.jpg"%}") no-repeat fixed center;
+	background-size:100% 100%;
+	}
+</style>
+    {% block script %}
+    <script type="text/javascript" src="{% static "default/ckeditor/ckeditor.js" %}"></script>
+    {% endblock %}
+<script>
+function myFunction()
+{
+    var name=document.getElementById("firstname").value;
+	var con=editor.getData();
+	if(name=="") alert("标题不能为空！");
+	else if(con=="") alert("正文不能为空！");
+	else
+    {
+        document.form.action="/publish/";
+        document.form.method="POST";
+    }
+}
+function myFunction2() {
+    document.form.action = "/list/?start=0&end=10";
+    document.form.method = "POST";
+}
+function myFunction1()
+{
+    if(1){
+        document.back.action="/list/?start=0&end=10";
+        document.back.method="POST"
+    }
+}
+</script>
+</head>
+<body>
+<div align="center" class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<h3>
+				发表问题
+			</h3>
+		</div>
+		<form name="back" method="" action="">
+                {% csrf_token %}
+                <input type="hidden" name="user" value="{{ user}}"><br>
+			    <button name="back"  class="btn btn-large btn-primary" type="submit" onclick="myFunction1()">返回首页</button>
+            </form>
+        <form name="form" method="" action="">
+            {% csrf_token %}
+		<div>
+                <input type="hidden" name="user" value="{{ user}}"><br>
+			标题：<input type="text" name="firstname" id="firstname">
+		</div>
+		<br>
+		<div>
+                内容：<textarea name="question" id="question"></textarea>
+                <script type="text/javascript">editor=CKEDITOR.replace('question');</script>
+		</div>
+		<div class="span12">
+			 <button class="btn btn-large btn-primary" type="submit" onclick="myFunction()">提交</button>&nbsp&nbsp&nbsp&nbsp<button class="btn btn-large btn-primary" type="submit" onclick="myFunction2()">返回</button>
+		</div>
+        </form>
+	</div>
+</div>
+</body>
+</html>

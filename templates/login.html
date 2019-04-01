@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" language="JavaScript" src="{% static 'scripts/jquery-1.3.1.js' %}"></script>
+<script type="text/javascript" language="JavaScript" src="{% static 'scripts/bootstrap.min.js' %}"></script>
+<script type="text/javascript" language="JavaScript" src="{% static 'scripts/login.js' %}"></script>
+<title>登录页面</title>
+<style type="text/css">
+#h2id{
+	font-family:"华文行楷";
+	color:#306;
+	}
+#tip1 tip2{
+	font-family:"Times New Roman", Times, serif
+	font-weight:bold;
+	}
+.pclass{
+	color:#306;
+	font-size:25px;
+	font-weight:bold;
+	font-family:"华文行楷";
+	}
+</style>
+</head>
+<style>
+{% load static %}
+body{
+    text-align:left;
+	background:url("{% static "img/2.jpg"%}") no-repeat fixed center;
+	background-size:100% 100%;
+	}
+</style>
+<br><br><br><br><br><br><br><br><br><br>
+<table width="500px" border="0" align="center" cellpadding="0" cellspacing="0" >
+  <tr>
+    <td align="center" valign="bottom" style=" background-color: #dddddd"><h2 id="h2id">欢迎来到登录页面</h2></td>
+  </tr>
+</table>
+<hr align="center" width="500px" size="5" color="#41E429">
+
+<form action="/login/" method="post" name="form1" id="form1">
+    {% csrf_token %}
+  <table width="500px" border="0" align="center" cellspacing="20" style="background-color: #dddddd">
+    <tr>
+      <td width="101" align="left"><p class="pclass"><label for="username">用户名：</label></p></td>
+      <td width="235"><input type="text" value="张三" name="username" id="username" size="16"  maxlength="20" onfocus="javascript:if(this.value=='张三')this.value='';" onblur="javascript:if(this.value=='')this.value='张三';">
+      <div id="tip1" style="display:inline;color: red;" name="tip1">{{ tip1 }}</div></td>
+    </tr>
+    <tr>
+      <td width="101"><p class="pclass"><label for="password">密码：</label></p></td>
+      <td width="235"><input type="password" name="password" id="password" size="16"  maxlength="20" >
+      <div id="tip2" style="display:inline;color: red;" name="tip2">{{ tip2 }}</div></td>
+    <tr>
+      <td colspan="4" align="center">
+          <button type="submit" class="btn btn-success" id="submit">登录</button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a type="button" class="btn" href="/regist/"><input type="button" name="regist" value="注册"></a>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset="utf-8">
+<title>首页</title>
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+{% load static %}
+body{
+    text-align:left;
+	background:url("{%static "img/9.jpg"%}") no-repeat fixed center;
+	background-size:100% 100%;
+	}
+#div1{
+        width:100%;
+        height: 600px;
+        overflow: hidden;
+        position:relative;
+        float:left;
+    }
+
+</style>
+<script>
+function myFunction1()
+{
+    alert("您已成功退出！");
+    document.form1.method="GET";
+    document.form1.action="/";
+}
+function myFunction2()
+{
+    if(1){
+        document.reply.action="/reply1/"
+        document.reply.method="GET"
+    }
+}
+function openShutManager(oSourceObj,oTargetObj,shutAble,oOpenTip,oShutTip){
+var sourceObj = typeof oSourceObj == "string" ? document.getElementById(oSourceObj) : oSourceObj;
+var targetObj = typeof oTargetObj == "string" ? document.getElementById(oTargetObj) : oTargetObj;
+var openTip = oOpenTip || "";
+var shutTip = oShutTip || "";
+if(targetObj.style.display!="none"){
+   if(shutAble) return;
+   targetObj.style.display="none";
+   if(openTip  &&  shutTip){
+    sourceObj.innerHTML = shutTip;
+   }
+} else {
+   targetObj.style.display="block";
+   if(openTip  &&  shutTip){
+    sourceObj.innerHTML = openTip;
+   }
+}
+}
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+            <div class="page-header">
+				<h1>
+					热门话题如下
+				</h1>
+			<ul class="breadcrumb">
+				<li>
+                    <form name="up" method="get" action="/publish/">
+                        {% csrf_token %}
+                        <input type="hidden" name="user" id="user" value="{{ user}}"><br>
+					    <button class="btn btn-large btn-primary" type="submit">发表问题</button>
+                    </form>
+				</li>
+				<li>
+					 <a href="/selfhomepage/?user={{ user }}"><button class="btn btn-large btn-primary" type="submit">个人主页</button></a></button>
+				</li>
+				<li>
+					<a href="/hotlist/"><button class="btn btn-large btn-primary" type="submit">热点问题</button></a>
+				</li>
+                <li >
+                    <a><form method="post" action="/list/?start=0&end=10">
+                        {% csrf_token %}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-large btn-primary" type="submit">返回首页</button>
+                    </form></a>
+				</li>
+			</ul>
+            </div>
+            <div id="div1"  >
+            <div id="content-list" style="width:110%;height: 600px;overflow-x:hidden;overflow-y: auto;position:absolute;left: 0px">
+                {% csrf_token %}
+                {% for que in  hotqueslist  %}
+                    <div class="list-group">
+
+                        <a align="left" href="/homepage/?queuser={{ que.user.username }}&user={{ user.username }}" class="list-group-item active">{{ que.user.username }}</a>
+                        <div class="list-group-item">
+                            <h4 class="list-group-item-heading">
+                                <a align="center" href="/questionlist/?questionID={{ que.quename }}&user={{ user.username }}">{{ que.quename }}</a>
+                            </h4>
+                        </div>
+                        <div class="list-group-item">
+                        <div class="panel-group" id="panel-11">
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                     <a class="panel-title" data-toggle="collapse" data-parent="#panel-11" href="#panel-element-{{ que.id }}">展开/折叠</a>
+                                </div>
+                                <div id="panel-element-{{ que.id }}" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        {{ que.content|safe}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="list-group-item">
+                        <div class="btn-group">
+
+                            <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 点击量:{{ que.num}}</button> <button id="modal-11" href="#modal-container-{{ que.id }}" role="button" class="btn" data-toggle="modal"><em class="glyphicon glyphicon-align-center"></em> 查看回复</button> <form name="reply1" method="GET" action="/reply1/"><input type="hidden" name="user" value="{{ que.user.username}}"><input type="hidden" name="quename" value="{{ que.quename}}"><input type="hidden" name="username" value="{{ user.username}}"><button class="btn btn-default" type="submit" ><em class="glyphicon glyphicon-align-right"></em> 进行回复</button></form>
+                                <div class="modal fade" id="modal-container-{{ que.id }}" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                    <h4 class="modal-title" id="myModalLabel">
+                                                        对{{ que.user.username }}的评论
+                                                    </h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <ul>
+                                                    {% csrf_token %}
+                                                    {% for reply in  replylist  %}
+                                                        <li>
+                                                            <div class="col-md-12 column">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        <h3 class="panel-title">
+                                                                            <a align="left" href="#" class="list-group-item active">{{ reply.user.username }}</a>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <div class="panel-body">
+                                                                        {{ reply.content|safe }}
+                                                                    </div>
+                                                                    <div class="panel-footer">
+                                                                        <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 赞</button><button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 回复</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                <div class="modal-footer">
+                                                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div></div></div>
+        <table width=500px border="0" align="center" cellspacing="20">
+            <tr>
+                <td colspan="4" align="center">
+                <a type="button" class="btn" href="/list/?start={{id|add:-10}}&end={{id|add:-5}}"><input type="hidden" name="lastpage" value="上一页" id="lastpage"></a>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a type="button" class="btn" href="/list/?start={{id  }}&end={{ id|add:5 }}"><input type="hidden" name="nextpage" value="下一页" id="nextpage"></a>
+                </td>
+            </tr>
+        </table>
+		</div>
+	</div>
+</div>
+</body>
+</html>
